@@ -6,8 +6,13 @@ const phone = document.getElementById("phone");
 const password = document.getElementById("password");
 const password2 = document.getElementById("password2");
 const organization = document.getElementById("organization");
-const formErrors = document.getElementById("formErrors");
-const errorList = document.getElementById("errorList");
+
+const userNameErrorList = document.getElementById("userNameErrorList");
+const emailErrorList = document.getElementById("emailErrorList");
+const phoneErrorList = document.getElementById("phoneErrorList");
+const passwordErrorList = document.getElementById("passwordErrorList");
+const password2ErrorList = document.getElementById("password2ErrorList");
+const organizationErrorList = document.getElementById("organizationErrorList");
 
 const fees = document.getElementById("fees");
 const discount = document.getElementById("discount");
@@ -20,7 +25,7 @@ form.addEventListener("submit", (e) => {
 
 //input validation function
 const inputValidation = () => {
-  errorList.innerHTML = "";
+  userNameErrorList.innerHTML = "";
   fees.innerHTML = "";
 
   const userNameValue = userName.value.trim();
@@ -32,14 +37,14 @@ const inputValidation = () => {
   const discountValue = discount.value.trim();
 
   if (userNameValue === "") {
-    errorAppend("Missing FullName");
+    errorAppend(userNameErrorList, "Missing FullName");
     userName.className = "form-control error";
   } else {
     userName.className = "form-control success";
   }
 
   if (!isEmailValid(emailValue) || emailValue === "") {
-    errorAppend("Invalid or missing email address");
+    errorAppend(emailErrorList, "Invalid or missing email address");
     email.className = "form-control error";
   } else {
     email.className = "form-control success";
@@ -48,19 +53,28 @@ const inputValidation = () => {
   let isPassError = false;
 
   if (passwordValue.length < 10 || passwordValue.length > 20) {
-    errorAppend("Password must be between 10 and 20 characters");
+    errorAppend(
+      passwordErrorList,
+      "Password must be between 10 and 20 characters"
+    );
     isPassError = true;
   }
   if (!hasLowerCase(passwordValue)) {
-    errorAppend("Password must contain at least one lowercase character");
+    errorAppend(
+      passwordErrorList,
+      "Password must contain at least one lowercase character"
+    );
     isPassError = true;
   }
   if (!hasUpperCase(passwordValue)) {
-    errorAppend("Password must contain at least one uppercase character");
+    errorAppend(
+      passwordErrorList,
+      "Password must contain at least one uppercase character"
+    );
     isPassError = true;
   }
   if (!hasNumber(passwordValue)) {
-    errorAppend("Password must contain at least one digit");
+    errorAppend(passwordErrorList, "Password must contain at least one digit");
     isPassError = true;
   }
   if (isPassError) {
@@ -70,21 +84,24 @@ const inputValidation = () => {
   }
 
   if (password2Value !== passwordValue) {
-    errorAppend("Password and confirmation password don’t match");
+    errorAppend(
+      password2ErrorList,
+      "Password and confirmation password don’t match"
+    );
     password2.className = "form-control error";
   } else if (password2Value.length > 0) {
     password2.className = "form-control success";
   }
 
   if (organizationValue === "") {
-    errorAppend("Missing attendee organization");
+    errorAppend(organizationErrorList, "Missing attendee organization");
     organization.className = "form-control error";
   } else {
     organization.className = "form-control success";
   }
 
   if (!isPhoneValid(phoneValue)) {
-    errorAppend("Wrong phone number provide");
+    errorAppend(phoneErrorList, "Wrong phone number provide");
     phone.className = "form-control error";
   } else {
     phone.className = "form-control success";
@@ -110,10 +127,10 @@ const inputValidation = () => {
   fees.appendChild(h4);
 };
 
-const errorAppend = (msg) => {
+const errorAppend = (place, msg) => {
   const error = document.createElement("li");
   error.innerText = msg;
-  errorList.appendChild(error);
+  place.appendChild(error);
 };
 
 const isEmailValid = (emailValue) => {
